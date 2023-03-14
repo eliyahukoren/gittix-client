@@ -4,11 +4,12 @@ import { useState } from 'react';
 export default () => {
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
+  const SIGNUP_URL = "/api/users/signup";
 
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    const response = await axios.post("/api/users/signup", {email, password});
+    const response = await axios.post(SIGNUP_URL, { email, password });
 
     console.log({response, email, password});
   }
