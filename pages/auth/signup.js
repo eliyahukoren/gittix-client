@@ -4,14 +4,18 @@ import { useState } from 'react';
 export default () => {
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
+  const [errors, setErrors ] = useState([]);
   const SIGNUP_URL = "/api/users/signup";
 
   const onSubmit = async (event) => {
     event.preventDefault();
+    setErrors([]);
 
-    const response = await axios.post(SIGNUP_URL, { email, password });
-
-    console.log({response, email, password});
+    try{
+      const response = await axios.post(SIGNUP_URL, { email, password });
+    }catch(e){
+      setErrors(e.response.data.errors);
+    }
   }
 
   return (
@@ -48,6 +52,15 @@ export default () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+
+        {errors.length > 0 && <div className="alert alert-danger mt-4">
+          <h4>Ooops...</h4>
+          <ul>
+            {errors.map((err) => (
+              <li key={err.message}>{err.message}</li>
+            ))}
+          </ul>
+        </div>}
 
         <button className="btn btn-primary mt-4">Sign Up</button>
       </form>
