@@ -1,21 +1,27 @@
-import axios from 'axios';
 import { useState } from 'react';
+import useRequest from '../../hooks/useRequest';
 
 export default () => {
   const [email, setEmail ] = useState('');
   const [password, setPassword ] = useState('');
-  const [errors, setErrors ] = useState([]);
   const SIGNUP_URL = "/api/users/signup";
+  const SIGNUP_METHOD = "post";
+
+  const {doRequest, errors} = useRequest(
+    {
+      url: SIGNUP_URL,
+      method: SIGNUP_METHOD,
+      body:{
+        email, password
+      }
+    }
+  );
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    setErrors([]);
 
-    try{
-      const response = await axios.post(SIGNUP_URL, { email, password });
-    }catch(e){
-      setErrors(e.response.data.errors);
-    }
+    doRequest();
+
   }
 
   return (
@@ -53,14 +59,7 @@ export default () => {
           />
         </div>
 
-        {errors.length > 0 && <div className="alert alert-danger mt-4">
-          <h4>Ooops...</h4>
-          <ul>
-            {errors.map((err) => (
-              <li key={err.message}>{err.message}</li>
-            ))}
-          </ul>
-        </div>}
+        {errors}
 
         <button className="btn btn-primary mt-4">Sign Up</button>
       </form>
