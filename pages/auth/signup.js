@@ -1,7 +1,18 @@
+import { useState } from 'react';
+
 export default () => {
+  const [email, setEmail ] = useState('');
+  const [password, setPassword ] = useState('');
+
+  const onSubmit = (event) => {
+    event.preventDefault();
+
+    console.log({email, password});
+  }
+
   return (
     <div className="min-vh-100 d-flex justify-content-center align-items-center">
-      <form>
+      <form onSubmit={onSubmit}>
         <h2 className="mb-5 text-center">Sign Up</h2>
 
         <div className="form-group mb-2">
@@ -12,8 +23,10 @@ export default () => {
             placeholder="Enter email"
             area-described="emailHelp"
             className="form-control"
+            values={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <small id="emailHelp" class="form-text text-muted">
+          <small id="emailHelp" className="form-text text-muted">
             We'll never share your email with anyone else.
           </small>
         </div>
@@ -23,15 +36,16 @@ export default () => {
 
           <input
             type="password"
+            autoComplete="on"
             id="signUpPassword"
             className="form-control"
             placeholder="Password"
+            values={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
 
-        <button type="button" className="btn btn-primary mt-4">
-          Sign Up
-        </button>
+        <button className="btn btn-primary mt-4">Sign Up</button>
       </form>
     </div>
   );
