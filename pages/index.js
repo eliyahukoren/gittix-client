@@ -2,14 +2,12 @@ import buildClient from "../api/buildClient";
 
 // Component Side Rendering
 const LandingPage = ({ currentUser }) => {
-  console.log(currentUser);
-  // axios.get("/api/users/currentuser");
-
-  return <h1>Landing Page</h1>
+  return currentUser ? <h1>You are signed in</h1> : <h1>You are NOT signed in</h1>;
 }
 
 // NextJS Server Side Rendering
 LandingPage.getInitialProps = async context => {
+  console.log('LANDING PAGE')
   const client = buildClient(context);
   const { data } = await client.get("/api/users/currentuser");
 
